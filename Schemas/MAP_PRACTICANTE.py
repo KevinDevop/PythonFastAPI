@@ -1,0 +1,32 @@
+from pydantic import BaseModel
+from datetime import date
+
+
+class MAP_PRACTICANTE_SCHEMA(BaseModel):
+    ID_PRACTICANTE: int
+    CODIGO_PRACTICANTE: int
+    DURACION_PRACTICA: int
+    FECHA_INGRESO: date
+    ACCESO_BIOMETRICO: str
+    ID_TIPO_PRACTICA: int
+    ID_INSTITUCION: int
+    ID_PISO: int
+    ID_LIDER_FUNCIONAL: int
+    ID_LIDER_ADMINISTRATIVO: int
+    ID_LIDER_ENTRENAMIENTO: int
+    ID_USUARIO: int
+
+
+class MAP_PRACTICANTE_COMPLETE_SCHEMA(BaseModel):
+    ID_PRACTICANTE: int
+    CODIGO_PRACTICANTE: int
+    DURACION_PRACTICA: int
+    FECHA_INGRESO: date
+    ACCESO_BIOMETRICO: str
+    TIPO_PRACTICA: str
+    INSTITUCION: str
+    PISO: str
+    LIDER_FUNCIONAL: str
+    LIDER_ADMINISTRATIVO: str
+    LIDER_ENTRENAMIENTO: str
+    USUARIO: str
