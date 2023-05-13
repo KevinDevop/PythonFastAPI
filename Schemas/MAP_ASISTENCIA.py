@@ -3,7 +3,9 @@ from datetime import datetime
 
 
 class MAP_ASISTENCIA_SCHEMA(BaseModel):
-    ID_ASISTENCIA: int
-    REGISTRO: datetime
-    ID_PRACTICANTE: int
+    id_asistencia: int
+    registro: datetime
+    id_practicante: int
 
+    class Config:
+        orm_mode = True

@@ -2,15 +2,21 @@ from pydantic import BaseModel, validator
 
 
 class BSC_CIUDAD_SCHEMA(BaseModel):
-    ID_CIUDAD: int
-    NOMBRE_CIUDAD: str
-    ID_DEPARTAMENTO: int
+    id_ciudad: int
+    nombre_ciudad: str
+    id_departamento: int
+
+    class Config:
+        orm_mode = True
 
 
 class BSC_CIUDAD_DEPARTAMENTO_SCHEMA(BaseModel):
-    ID_CIUDAD: int
-    NOMBRE_CIUDAD: str
-    NOMBRE_DEPARTAMENTO: str
+    id_ciudad: int
+    nombre_ciudad: str
+    nombre_departamento: str
+
+    class Config:
+        orm_mode = True
 
 
 class BSC_CIUDAD_POST_SCHEMA(BaseModel):

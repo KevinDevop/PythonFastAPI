@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, status
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from Models.Models import BSC_CIUDAD, BSC_DEPARTAMENTO
 from Schemas.BSC_CIUDAD import BSC_CIUDAD_SCHEMA, BSC_CIUDAD_DEPARTAMENTO_SCHEMA, BSC_CIUDAD_POST_SCHEMA
 from db import get_db
@@ -8,21 +8,21 @@ from db import get_db
 route = APIRouter(prefix="/BSC_CIUDAD", tags=["BSC_CIUDAD"])
 
 
-@route.get("/", description="Retorna todas las ciudades")
+@route.get("/", description="Retorna todas las ciudades", response_model=list[BSC_CIUDAD_SCHEMA])
 async def getCiudad(db: Session = Depends(get_db)):
     ciudades = db.query(BSC_CIUDAD).all()
 
-    return [BSC_CIUDAD_SCHEMA(ID_CIUDAD=ciudad.id_ciudad, NOMBRE_CIUDAD=ciudad.nombre_ciudad, ID_DEPARTAMENTO=ciudad.id_departamento)for ciudad in ciudades]
+    return [BSC_CIUDAD_SCHEMA.from_orm(ciudad) for ciudad in ciudades]
 
 
 @route.get("/DEPARTAMENTO", description="Retorna todas las ciuidades con su respectivo departamento")
-async def GetCiudadesDepartameto(db: Session = Depends(get_db)):
+async def GetCiudadesDepartameto(db: Session = Depends(get_db)) -> list[BSC_CIUDAD_DEPARTAMENTO_SCHEMA]:
     ciudades = db.query(BSC_CIUDAD, BSC_DEPARTAMENTO).join(
-        BSC_DEPARTAMENTO, BSC_CIUDAD.id_departamento == BSC_DEPARTAMENTO.id_departamento).all()
+        BSC_DEPARTAMENTO, BSC_CIUDAD.id_departamento == BSC_DEPARTAMENTO.id_departamento).options(joinedload(BSC_CIUDAD.departamento)).all()
 
-    result = [BSC_CIUDAD_DEPARTAMENTO_SCHEMA(ID_CIUDAD=ciudad.id_ciudad,
-                                             NOMBRE_CIUDAD=ciudad.nombre_ciudad,
-                                             NOMBRE_DEPARTAMENTO=departamento.nombre_departamento) for ciudad, departamento in ciudades]
+    result = [BSC_CIUDAD_DEPARTAMENTO_SCHEMA(id_ciudad=ciudad.id_ciudad,
+                                             nombre_ciudad=ciudad.nombre_ciudad,
+                                             nombre_departamento=departamento.nombre_departamento) for ciudad, departamento in ciudades]
 
     return result
 

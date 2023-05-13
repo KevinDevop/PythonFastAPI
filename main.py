@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from Routes import bsc_departamento, bsc_pais, bsc_idioma, bsc_usuario, bsc_ciudad, map_administrativos, map_piso, map_practicante, bsc_login, bsc_bitacora, bsc_rol, bsc_usuario_idioma, map_asistencia
+from Routes import bsc_departamento, bsc_pais, bsc_idioma, bsc_usuario, bsc_ciudad, map_administrativos, map_piso, map_practicante, bsc_login, bsc_bitacora, bsc_rol, bsc_usuario_idioma, map_asistencia, map_entrenamiento, bsc_genero
 from db import get_db
 import time
 
@@ -34,6 +34,8 @@ app.include_router(map_practicante.route)
 app.include_router(map_asistencia.route)
 app.include_router(map_piso.route)
 app.include_router(map_administrativos.route)
+app.include_router(map_entrenamiento.route)
+app.include_router(bsc_genero.route)
 
 
 @app.get("/")

@@ -9,24 +9,24 @@ route = APIRouter(prefix="/MAP_ASISTENCIA", tags=["MAP_ASISTENCIA"])
 
 
 @route.get("/", description="Obtiene todos los registros de Asistencia")
-async def getMapAsistencia(db: Session = Depends(get_db), skip: int = 0, limit: int = 10):
-    # asistencias = db.query(MAP_ASISTENCIA).order_by(
-    #     MAP_ASISTENCIA.id_asistencia).offset(skip).limit(limit).all()
+async def getMapAsistencia(db: Session = Depends(get_db)) -> list[MAP_ASISTENCIA_SCHEMA]:
+    asistencias = db.query(MAP_ASISTENCIA).all()
 
-    # return [MAP_ASISTENCIA_SCHEMA(ID_ASISTENCIA=asistencia.id_asistencia, REGISTRO=asistencia.registro, ID_PRACTICANTE=asistencia.id_practicante) for asistencia in asistencias]
-    query = db.query(MAP_ASISTENCIA.id_asistencia,
-                     MAP_ASISTENCIA.registro, MAP_ASISTENCIA.id_practicante)
+    return [MAP_ASISTENCIA_SCHEMA.from_orm(asistencia) for asistencia in asistencias]
 
-    asistencia = query.order_by(MAP_ASISTENCIA.id_asistencia).paginate(
-        page=skip, per_page=limit)
+    # query = db.query(MAP_ASISTENCIA.id_asistencia,
+    #                  MAP_ASISTENCIA.registro, MAP_ASISTENCIA.id_practicante)
 
-    return {
-        "data": [MAP_ASISTENCIA_SCHEMA(ID_ASISTENCIA=asistencia.id_asistencia, REGISTRO=asistencia.registro, ID_PRACTICANTE=asistencia.id_practicante) for asistencia in asistencia.items],
-        "total": asistencia.total,
-        "pages": asistencia.pages,
-        "page": asistencia.page,
-        "per_page": asistencia.per_page,
-    }
+    # asistencia = query.order_by(MAP_ASISTENCIA.id_asistencia).paginate(
+    #     page=skip, per_page=limit)
+
+    # return {
+    #     "data": [MAP_ASISTENCIA_SCHEMA(ID_ASISTENCIA=asistencia.id_asistencia, REGISTRO=asistencia.registro, ID_PRACTICANTE=asistencia.id_practicante) for asistencia in asistencia.items],
+    #     "total": asistencia.total,
+    #     "pages": asistencia.pages,
+    #     "page": asistencia.page,
+    #     "per_page": asistencia.per_page,
+    # }
 
 
 @route.post("/CARGAR_REGISTROS", description="Se cargan las asistencias de los practicantes.")
