@@ -4,7 +4,7 @@ from Models.Models import MAP_ASISTENCIA
 from Schemas.MAP_ASISTENCIA import MAP_ASISTENCIA_SCHEMA
 from db import get_db
 import pandas as pd
-
+from functools import lru_cache
 route = APIRouter(prefix="/MAP_ASISTENCIA", tags=["MAP_ASISTENCIA"])
 
 
